@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <script src="../browser-polyfill-dist/browser-polyfill.min.js"></script> -->
+    <script src="../include/bootstrap.bundle.min.js"></script>
+    <script src="../include/timepicker.js"></script>
+    <link rel="stylesheet" href="../include/bootstrap.min.css" />
+    <link rel="stylesheet" href="../node_modules/vanillajs-datepicker/dist/css/datepicker-bs5.css" />
+    <link rel="stylesheet" href="../include/timepicker.css" />
+    <link rel="stylesheet" href="popups.css" />
+  </head>
+  <body>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">Are you sure you want to delete this Session?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="confirmDeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- tabindex="-1" -->
+    <div class="offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Sessions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Export</button>
+          <ul class="dropdown-menu">
+            <li><a id="copyJSON" class="dropdown-item" href="#">Copy JSON</a></li>
+            <li><a class="dropdown-item">Another action</a></li>
+            <li><a class="dropdown-item">Something else here</a></li>
+          </ul>
+        </div>
+        <h3>Projects</h3>
+        <button id="collapseAll" class="collapse">collapse all</button>
+        <div id="sessionList"></div>
+      </div>
+    </div>
+    <div id="popup-wrapper">
+      <div id="inline-scrollbar"></div>
+      <div
+        id="popup-content"
+        style="background-image: linear-gradient(180deg, #161616 64%, #3c3053 100%)"
+        class="h-100 position-relative d-flex flex-column align-items-center"
+      >
+        <nav class="w-100 pb-0 navbar bg-body-secondary">
+          <div class="container-fluid">
+            <div class="w-75 gap-1 d-flex flex-row align-items-center">
+              <div class="d-flex playpause small">
+                <input type="checkbox" style="display: none" value="None" id="playing-master" />
+                <label for="playing-master"></label>
+              </div>
+              <div class="bg-light p-1">
+                <label id="runningTimerLabel" class="text-dark">00:00:00</label>
+              </div>
+              <div>|</div>
+              <div class="d-flex flex-row col-5 gap-1">
+                <input id="runningStartTime" class="col-5" type="text" step="60" disabled />
+                <div class="" style="text-align: center; width: 24px"><b>-</b></div>
+                <input id="runningEndTime" class="col-5" type="text" step="60" disabled />
+              </div>
+            </div>
+            <div class="d-flex flex-column">
+              <a
+                class="py-0 btn btn-primary"
+                data-bs-toggle="offcanvas"
+                href="#offcanvasExample"
+                role="button"
+                aria-controls="offcanvasExample"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-list"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+                  />
+                </svg>
+              </a>
+              <div>Sessions</div>
+            </div>
+          </div>
+        </nav>
+        <div class="spacer mt-2"></div>
+        <h1 class="display-4 mb-0">Time<span class="text-danger-emphasis">Lance</span></h1>
+        <div class="gap-2 d-flex align-items-center flex-column">
+          <hr class="mt-0" />
+          <div class="w-100 d-flex flex-column">
+            <div class="d-flex d-row form-floating">
+              <select id="timeProject" class="form-select w-100 text-white bg-dark">
+                <option>Unnamed Project</option>
+              </select>
+              <label id="lblcurProj" for="timeProject" class="text-warning">Project</label>
+              <input type="text" id="newProjectInput" class="form-control hidden" />
+              <label id="lblnewProj" for="newProjectInput" class="text-warning hidden">Add Project</label>
+              <button
+                id="addProjectBtn"
+                class="btn btn-success w-25 h-20 m-0 p-0"
+                aria-pressed="false"
+                data-bs-toggle="button"
+              >
+                +
+              </button>
+            </div>
+            <div class="form-floating">
+              <input id="timeDate" class="form-control manualTimer" type="text" />
+              <label for="timeDate" class="text-white">Date</label>
+            </div>
+          </div>
+          <div class="d-flex" style="">
+            <div class="form-floating d-flex flex-column align-items-start">
+              <input id="timeStart" class="form-control manualTimer" type="text" step="60" />
+              <label for="timeStart" class="text-white">Start</label>
+            </div>
+            <div class="" style="text-align: center; width: 24px"><b>_</b></div>
+            <div class="form-floating d-flex flex-column align-items-end">
+              <input id="timeEnd" class="form-control manualTimer" type="text" step="60" />
+              <label for="timeEnd" class="text-white">End</label>
+            </div>
+          </div>
+          <div class="w-100 form-floating">
+            <textarea
+              id="timeNotes"
+              class="form-control h-100"
+              placeholder="Type your Notes/Activity here..."
+            ></textarea>
+            <label for="timeNotes" class="text-white">Notes</label>
+          </div>
+          <button id="submitTime">Submit</button>
+        </div>
+        <!-- <div class="d-flex flex-column bg-secondary px-4 py-2 rounded-4">
+          <div class="d-flex playpause">
+            <input type="checkbox" style="display: none" value="None" id="playing-master" />
+            <label for="playing-master"></label>
+          </div>
+          <div style="background-color: white; padding: 2px; margin: 5px">
+            <label id="runningTimerLabel">00:00:00</label>
+          </div>
+        </div> -->
+        <!-- <button id="reset">Reset</button> -->
+        <hr />
+      </div>
+    </div>
+    <div id="error-content" class="hidden">
+      <p>Can't beastify this web page.</p>
+      <p>Try a different page.</p>
+    </div>
+  </body>
+  <script type="module" src="pageActionPopup.js"></script>
+</html>

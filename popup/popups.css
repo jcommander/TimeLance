@@ -1,0 +1,204 @@
+html,
+body {
+  scrollbar-width: none;
+  max-height: 500px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Trebuchet MS", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.datepicker {
+  color: #000;
+}
+
+.datepicker-controls .btn {
+  color: #131313;
+}
+
+#sessionList .accordion {
+  --bs-accordion-body-padding-x: 0.5rem;
+  --bs-accordion-body-padding-y: 0.25rem;
+}
+
+#popup-wrapper {
+  overflow: scroll;
+  max-height: 500px;
+  scrollbar-width: none;
+}
+
+#popup-content {
+  width: 360px;
+  /* width: 242px; */
+}
+
+#inline-scrollbar {
+  z-index: 2;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0%;
+  border-radius: 4px;
+  width: 6px;
+  height: 24px;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+hr {
+  width: 75%;
+  color: white;
+}
+
+.spacer {
+  display: inline-block;
+  margin-left: 12px;
+}
+
+#seshList {
+  overflow-y: auto;
+  max-height: 250px;
+  width: 100%;
+}
+
+.fakeButton {
+  border: none;
+  width: auto;
+  margin: 2px auto;
+  padding: 4px;
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: #e5f2f2;
+}
+
+.playpause {
+}
+
+.playpause label {
+  margin: auto;
+  display: block;
+  box-sizing: border-box;
+  width: 0;
+  height: 74px;
+  border-color: transparent transparent transparent #6cb98c;
+  transition: 120ms all cubic-bezier(0.4, 0, 1, 1);
+  cursor: pointer;
+  border-style: solid;
+  border-width: 37px 0 37px 60px;
+}
+
+.playpause.small label {
+  height: 36px;
+  border-width: 17px 0 17px 30px;
+  border-color: transparent transparent transparent #bb88ff;
+}
+
+.playpause input[type="checkbox"] {
+  visibility: hidden;
+}
+
+.playpause input[type="checkbox"]:checked + label {
+  border-style: double;
+  border-width: 0px 0 0px 60px;
+  border-color: transparent transparent transparent #ff8888;
+}
+
+.playpause.small input[type="checkbox"]:checked + label {
+  border-width: 0px 0 0px 30px;
+}
+
+p {
+  padding: 1rem;
+  margin: 0;
+  background-color: #e6e6e6;
+}
+
+.hidden {
+  display: none !important;
+}
+
+input {
+  width: auto;
+  padding: 2px 0px;
+  margin: 0 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.inline-input {
+  position: relative;
+  height: 40px;
+  width: 120px;
+}
+
+label.btn {
+  padding: 4px 8px;
+  margin: 0px;
+  font-family: inherit;
+  font-size: inherit;
+  display: inline-block;
+  cursor: pointer;
+  background-color: white;
+  border: solid 1px #767676;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.inline-button {
+  right: 0;
+  width: 32px;
+  line-height: 12px;
+  margin-top: 3px;
+  position: absolute;
+  background-color: rgb(173, 255, 47);
+  padding: 2px 4px !important;
+  border: rgb(9, 9, 121) 1px solid;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.collapse {
+  color: white;
+  width: auto;
+  padding: 2px;
+  border: 1px solid black;
+  background-color: darkgrey;
+  font-size: 16px;
+}
+
+button.playing {
+  background-color: lightcoral;
+}
+
+button {
+  border: none;
+  width: 70%;
+  margin: 2px auto;
+  padding: 4px;
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
+  border: 1px solid black;
+  background-color: #becad3;
+}
+
+button:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+  background-color: #8880d4;
+}
+
+button[type="reset"] {
+  background-color: #fbfbc9;
+}
+
+button[type="reset"]:hover {
+  background-color: #eaea9d;
+}

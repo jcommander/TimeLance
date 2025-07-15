@@ -1,0 +1,74 @@
+div[id^="tp_"].timepicker__wrapper {
+  top: 56px;
+  z-index: 5;
+  opacity: 0;
+  padding: 0 !important;
+  height: auto;
+  min-width: 150px;
+  max-height: 0px;
+  overflow: hidden;
+  position: absolute;
+  transition: max-height 0.1s ease-in-out;
+  background: #f4f5f7;
+  background: linear-gradient(to bottom, #e3e3e5 0%, #efefef 7%, #f4f5f7 100%);
+  border-radius: 0px 0px 5px 5px;
+  border: 2px solid #303233;
+  border-top: transparent;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+div[id^="tp_"].timepicker__wrapper * {
+  box-shadow: border-box;
+}
+div[id^="tp_"].timepicker__wrapper-active {
+  opacity: 1;
+  max-height: 150px;
+  padding: 15px;
+}
+div[id^="tp_"].timepicker__wrapper-full > div {
+  width: 33% !important;
+}
+div[id^="tp_"].timepicker__wrapper > div {
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+  max-width: 75px;
+}
+div[id^="tp_"].timepicker__wrapper > div .display {
+  color: #303233;
+  font-size: 30px;
+  font-weight: 100;
+  line-height: 35px;
+  margin: 0px;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div[id^="tp_"].timepicker__wrapper > div .timepicker__button {
+  margin: 15px auto;
+  padding: 0px;
+  background: #fff;
+  cursor: pointer;
+  background: transparent;
+  border: solid 5px transparent;
+}
+div[id^="tp_"].timepicker__wrapper > div .timepicker__button__up > div {
+  width: 0px;
+  height: 0px;
+  margin: auto;
+  border-left: solid 5px transparent;
+  border-right: solid 5px transparent;
+  border-bottom: solid 5px #303233;
+}
+div[id^="tp_"].timepicker__wrapper > div .timepicker__button__down > div {
+  width: 0px;
+  height: 0px;
+  margin: auto;
+  border-left: solid 5px transparent;
+  border-right: solid 5px transparent;
+  border-top: solid 5px #303233;
+}
