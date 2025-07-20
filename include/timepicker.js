@@ -113,7 +113,7 @@ function timepicker(element, args) {
     if (!Object.keys(this.elements).length) {
       for (e = 0; e < elements.length; e++) {
         this.elements[elements[e]] = document.createElement("div");
-        this.elements[elements[e]].className = "timepicker timepicker__" + elements[e];
+        this.elements[elements[e]].className = "timepicker__" + elements[e];
 
         var up = document.createElement("div");
         up.appendChild(document.createElement("div"));
@@ -310,7 +310,7 @@ function timepicker(element, args) {
       this.updateBounds(this.timepicker, e.target);
 
       this.active = true;
-    } else if (!e.target.classList.contains("timepicker") && !e.target.parentElement.classList.contains("timepicker")) {
+    } else if (!e.target.className.includes("timepicker") && !e.target.parentElement.className.includes("timepicker")) {
       this.active = false;
     }
 

@@ -11,6 +11,7 @@ import Datepicker from "../node_modules/vanillajs-datepicker/js/Datepicker.js";
 const use24HourFormat = true;
 
 const isChrome = !("browser" in self);
+
 //#region Timing Formatters
 function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
@@ -90,6 +91,7 @@ let DOMRefs = {
     submit: "#submitTime",
   },
 };
+
 function resolveRefs(obj) {
   for (const key in obj) {
     const val = obj[key];
@@ -141,6 +143,7 @@ function init() {
         let newOpt = document.createElement("option");
         newOpt.textContent = newProj;
         DOMRefs.form.projSelect.append(newOpt);
+        newOpt.selected = true;
       }
     }
     DOMRefs.form.projSelect.classList.toggle("hidden");
@@ -335,47 +338,50 @@ function generateSessionList(sessions, append = false) {
   }
   // Hook up delete Buttons
   document.querySelectorAll(".deleteProj").forEach((delBtn) => {
-    delBtn.onclick = (e) => {
+    delBtn.onclick = (delBtnEvent) => {
       document.querySelector("#confirmDeleteBtn").onclick = () => {
-        // we need to determine project name and startTime as thats how its saved in storage
-        let sessionStartTime = e.target.parentNode.parentNode.getAttribute("data-session-reference");
-        let closestCollapse = e.target.closest(".collapse");
-        if (sessionStartTime && closestCollapse) {
-          let projReferenceBtn = document.querySelector(`button[data-bs-target="#${closestCollapse.id}"]`);
-          if (projReferenceBtn) {
-            //   let openCollapses = document.querySelectorAll("#sessionList .collapse.show");
-            //   openCollapses.forEach((col) => {
-            // 	col.getAttribute("data-bs-target")
-            //   });
-            let projName = projReferenceBtn.getAttribute("data-session-reference");
-            const scrollTopPreDelete = document.querySelector(".offcanvas-body").scrollTop;
-            browser.runtime
-              .sendMessage({
-                type: "deleteSession",
-                data: { project: projName, startTime: sessionStartTime },
-              })
-              .then(() => {
-                browser.storage.local
-                  .get()
-                  .then(handleStorageOnStartup)
-                  .then(() => {
-                    console.log("Looking for " + `button[data-session-reference="${projName}"]`);
-                    let projBtn = document.querySelector(`button[data-session-reference="${projName}"]`);
-                    let projCollapseSel = projBtn.getAttribute("data-bs-target");
-                    let projCollapse = document.querySelector(projCollapseSel);
-                    console.log(projCollapse);
-                    projBtn.classList.remove("collapsed");
-                    projCollapse.classList.add("show");
-                    document.querySelector(".offcanvas-body").scrollTop = scrollTopPreDelete;
-                  });
-              });
-          }
-        }
+        requestSessionDelete(delBtnEvent);
       };
     };
   });
 }
-generateSessionList();
+
+function requestSessionDelete(e) {
+  // we need to determine project name and startTime as thats how its saved in storage
+  let sessionStartTime = e.target.parentNode.parentNode.getAttribute("data-session-reference");
+  let closestCollapse = e.target.closest(".collapse");
+  if (sessionStartTime && closestCollapse) {
+    let projReferenceBtn = document.querySelector(`button[data-bs-target="#${closestCollapse.id}"]`);
+    if (projReferenceBtn) {
+      //   let openCollapses = document.querySelectorAll("#sessionList .collapse.show");
+      //   openCollapses.forEach((col) => {
+      // 	col.getAttribute("data-bs-target")
+      //   });
+      let projName = projReferenceBtn.getAttribute("data-session-reference");
+      const scrollTopPreDelete = document.querySelector(".offcanvas-body").scrollTop;
+      browser.runtime
+        .sendMessage({
+          type: "deleteSession",
+          data: { project: projName, startTime: sessionStartTime },
+        })
+        .then(() => {
+          browser.storage.local
+            .get()
+            .then(handleStorageOnStartup)
+            .then(() => {
+              console.log("Looking for " + `button[data-session-reference="${projName}"]`);
+              let projBtn = document.querySelector(`button[data-session-reference="${projName}"]`);
+              let projCollapseSel = projBtn.getAttribute("data-bs-target");
+              let projCollapse = document.querySelector(projCollapseSel);
+              console.log(projCollapse);
+              projBtn.classList.remove("collapsed");
+              projCollapse.classList.add("show");
+              document.querySelector(".offcanvas-body").scrollTop = scrollTopPreDelete;
+            });
+        });
+    }
+  }
+}
 
 function updateRunningTimer() {
   const now = new Date();
